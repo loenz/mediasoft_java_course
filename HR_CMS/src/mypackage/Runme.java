@@ -2,6 +2,8 @@ package mypackage;
 
 import mypackage.profile.Gender;
 import mypackage.profile.Person;
+import mypackage.exception.WrongDateException;
+
 import java.util.Date;
 
 public class Runme {
