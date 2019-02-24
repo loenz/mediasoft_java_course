@@ -95,8 +95,16 @@ public class Person {
         );
     }
 
-    public void changeBirthDate(Date birthDate) throws WrongDateException) {
+    public void changeBirthDate(Date birthDate) throws WrongDateException {
+        if(birthDate == null) {
+            throw new WrongDateException("Birth date cannot be NULL!");
+        }
 
+        if(birthDate.after(new Date())) {
+            throw new WrongDateException("Birth date cannot be in future!");
+        }
+
+        this.birthDate = birthDate;
     }
 
 

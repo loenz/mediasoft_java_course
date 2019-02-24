@@ -14,7 +14,16 @@ public class Runme {
         System.out.println(ivanIvanov + " - his code - " + ivanIvanov.hashCode());
         System.out.println(lolaPetrova + " - his code - " + lolaPetrova.hashCode());
 
+        Date newDate = new Date();
+        newDate.setTime(23456);
 
+        try {
+            ivanIvanov.changeBirthDate(newDate);
+        } catch (WrongDateException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(ivanIvanov + " - his code - " + ivanIvanov.hashCode());
 
     }
 
