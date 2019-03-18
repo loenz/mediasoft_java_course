@@ -1,4 +1,4 @@
-package mypackage.profile;
+package mypackage.entity;
 
 public enum Gender {
     MALE,
