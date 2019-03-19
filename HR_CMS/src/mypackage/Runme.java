@@ -1,5 +1,6 @@
 package mypackage;
 
+import mypackage.entity.Education;
 import mypackage.exception.WrongGenderException;
 import mypackage.entity.Gender;
 import mypackage.entity.Person;
@@ -44,6 +45,14 @@ public class Runme {
         Calendar calendarPetrov = new GregorianCalendar(1982, Calendar.JANUARY,12);
         Date datePetrov = calendarPetrov.getTime();
 
+        Education educationLola;
+        educationLola = new Education(
+                1990,
+                1995,
+                "ULSTU",
+                "informatic",
+                "specialist");
+
         Profile lolaPetrova = new Profile(
                 "Lola",
                 "Petrova",
@@ -51,25 +60,26 @@ public class Runme {
                 Gender.FEMALE,
                 "8-901-001-01-01",
                 "petrova@mail.ru",
-                "
-               );
-        Profile dimaPirmatov = new Profile(
-                "Dmitriy",
-                "Pirmatov",
-                datePirmatov,
+                educationLola,
+                Boolean.TRUE);
 
-                );
-        Profile ivanPetrov = new Profile(
-                "Ivan",
-                "Petrov",
-                datePetrov,
-                Gender.MALE,
-                );
+//        Profile dimaPirmatov = new Profile(
+//                "Dmitriy",
+//                "Pirmatov",
+//                datePirmatov,
+//
+//                );
+//        Profile ivanPetrov = new Profile(
+//                "Ivan",
+//                "Petrov",
+//                datePetrov,
+//                Gender.MALE,
+//                );
 
 
         System.out.println(lolaPetrova + " - his code - " + lolaPetrova.hashCode());
-        System.out.println(dimaPirmatov + " hash: " + dimaPirmatov.hashCode());
-        System.out.println(ivanPetrov);
+//        System.out.println(dimaPirmatov + " hash: " + dimaPirmatov.hashCode());
+//        System.out.println(ivanPetrov);
 
 //        Date newDate = new Date();
 //        Long time = newDate.getTime();

@@ -25,11 +25,22 @@ public class Profile extends Person {
         this.haveCar = haveCar;
     }
 
+    @Override
+    public String toString() {
+
+        String result = this.getPhoneNumber() != null ? this.getPhoneNumber() + " " : " ";
+        result += this.geteMail() != null ? this.geteMail() + " " : " ";
+        result += this.getEducationList() != null ? getEducationList() + " " : " ";
+        result += this.getHaveCar() != null ? this.getHaveCar() : " ";
+
+        return result;
+    }
+
     public String getPhoneNumber() { return phoneNumber; }
 
     public String geteMail() { return eMail; }
 
-    public Education getEducationList() {return educationList;}
+    public Education getEducationList() { return educationList; }
 
     public Boolean getHaveCar() { return haveCar; }
 }
