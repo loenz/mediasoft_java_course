@@ -12,6 +12,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
+import mypackage.exception.PersonDataSourceException;
+import mypackage.service.PersonDatabaseService;
+import mypackage.service.PersonService;
+
 public class Runme {
     public static void main(String[] args)  {
 //        Scanner in = new Scanner(System.in);
@@ -37,6 +41,19 @@ public class Runme {
 //        double gradePointAverage = in.nextDouble();
 //
 //        Person ivanIvanov = new Person(firstname,lastname, new Date(), gender, gradePointAverage, Boolean.FALSE);
+
+        PersonService personService = new PersonDatabaseService();
+
+        try {
+            System.out.println("All of the persons: ");
+            personService.getAllPersons().forEach(System.out::println);
+
+            System.out.println("");
+            System.out.println("Person with the ID = 2:");
+            System.out.println(personService.getPersonByID(2));
+        } catch (PersonDataSourceException pdse) {
+            pdse.printStackTrace();
+        }
 
 
         Calendar calendar = new GregorianCalendar(1985, Calendar.DECEMBER,27);

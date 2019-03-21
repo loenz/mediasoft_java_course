@@ -16,6 +16,9 @@ public class Person {
     private Date birthDate;
     private Gender gender;
 
+    private Integer id;
+    private String name;
+
     public Person(String firstName, String lastName, Date birthDate, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -78,6 +81,8 @@ public class Person {
     @Override
     public String toString() {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+
         String result = "Lastname: ";
         result += this.getLastName() != null ? this.getLastName() + " \n" : "\n";
         result += "Firstname: ";
@@ -87,6 +92,7 @@ public class Person {
         result += "Gender: ";
         result += this.getGender() != null ? this.getGender() + " \n" : "\n";
 
+        result += this.getId() + ": " + this.getName();
         return result;
     }
 
@@ -124,5 +130,18 @@ public class Person {
     public String getLastName() { return lastName; }
     public Date getBirthDate() { return birthDate; }
     public Gender getGender() { return gender; }
+
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }
