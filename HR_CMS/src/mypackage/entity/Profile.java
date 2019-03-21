@@ -27,12 +27,15 @@ public class Profile extends Person {
 
     @Override
     public String toString() {
-
-        String result = this.getPhoneNumber() != null ? this.getPhoneNumber() + " " : " ";
-        result += this.geteMail() != null ? this.geteMail() + " " : " ";
-        result += this.getEducationList() != null ? getEducationList() + " " : " ";
-        result += this.getHaveCar() != null ? this.getHaveCar() : " ";
-
+        String result = super.toString();
+        result += "PhoneNumber: ";
+        result += this.getPhoneNumber() != null ? this.getPhoneNumber() + " \n" : "";
+        result += "E-mail: ";
+        result += this.geteMail() != null ? this.geteMail() + " \n" : "";
+        result += "Education: ";
+        result += this.getEducationList() != null ? getEducationList() + " \n" : "";
+        result += "Have car: ";
+        result += this.getHaveCar() != null ? "Есть \n" : "Нет \n";
         return result;
     }
 
@@ -43,4 +46,6 @@ public class Profile extends Person {
     public Education getEducationList() { return educationList; }
 
     public Boolean getHaveCar() { return haveCar; }
+
+
 }

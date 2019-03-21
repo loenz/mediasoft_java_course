@@ -78,10 +78,14 @@ public class Person {
     @Override
     public String toString() {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String result = this.getLastName() != null ? this.getLastName() + " " : "";
-        result += this.getFirstName() != null ? this.getFirstName() + " " : "";
-        result += this.getBirthDate() != null ? dateFormat.format(this.getBirthDate()) + " " : "";
-        result += this.getGender() != null ? this.getGender() : "";
+        String result = "Lastname: ";
+        result += this.getLastName() != null ? this.getLastName() + " \n" : "\n";
+        result += "Firstname: ";
+        result += this.getFirstName() != null ? this.getFirstName() + " \n" : "\n";
+        result += "BirthDate: ";
+        result += this.getBirthDate() != null ? dateFormat.format(this.getBirthDate()) + " \n" : "\n";
+        result += "Gender: ";
+        result += this.getGender() != null ? this.getGender() + " \n" : "\n";
 
         return result;
     }
