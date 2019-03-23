@@ -82,17 +82,13 @@ public class Person {
     public String toString() {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
+        String result = "";
+        result += this.getLastName() != null ? "Lastname: " + this.getLastName() + " \n" : "";
+        result += this.getFirstName() != null ? "Firstname: " + this.getFirstName() + " \n" : "";
+        result += this.getBirthDate() != null ? "BirthDate: " + dateFormat.format(this.getBirthDate()) + " \n" : "";
+        result += this.getGender() != null ? "Gender: " + this.getGender() + " \n" : "";
+        result += this.getId() + " : " + this.getName();
 
-        String result = "Lastname: ";
-        result += this.getLastName() != null ? this.getLastName() + " \n" : "\n";
-        result += "Firstname: ";
-        result += this.getFirstName() != null ? this.getFirstName() + " \n" : "\n";
-        result += "BirthDate: ";
-        result += this.getBirthDate() != null ? dateFormat.format(this.getBirthDate()) + " \n" : "\n";
-        result += "Gender: ";
-        result += this.getGender() != null ? this.getGender() + " \n" : "\n";
-
-        result += this.getId() + ": " + this.getName();
         return result;
     }
 
@@ -140,8 +136,8 @@ public class Person {
     public String getName() {
         return name;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameint) {
+        this.name = nameint;
     }
 
 }

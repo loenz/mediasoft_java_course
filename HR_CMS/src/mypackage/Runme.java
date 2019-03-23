@@ -7,6 +7,7 @@ import mypackage.entity.Person;
 import mypackage.entity.Profile;
 import mypackage.exception.WrongDateException;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,13 +19,41 @@ import mypackage.service.PersonService;
 
 public class Runme {
     public static void main(String[] args)  {
-//        Scanner in = new Scanner(System.in);
+
+        Integer idProfile;
+        String namePerson;
+
+        Scanner in = new Scanner(System.in);
+
+        while (true) {
+            try {
+                System.out.print("Enter operation: \n" +
+                        "1 - New profile..\n" +
+                        "2 - Edit profile..\n" +
+                        "3 - Find profile..\n" +
+                        "4 - Send message..\n" +
+                        "5 - Transaction log..\n" +
+                        "6 - Exit..\n");
+                int selectedItem = in.nextInt();
+                if (selectedItem == 1 ) {
+                    System.out.print("Enter id of new person: ");
+                    idProfile = in.nextInt();
+                    System.out.print("Enter name of new person: ");
+                    namePerson = in.next();
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+            }
+        }
+
 //        System.out.print("Enter Firstname: ");
 //        String firstname = in.next();
 //        System.out.print("Enter Lastname: ");
 //        String lastname = in.next();
 //        Gender gender;
 //
+        // Проверка правильности ввода пола
 //        while (true) {
 //            try {
 //                    System.out.print("Enter gender: ");
@@ -37,10 +66,7 @@ public class Runme {
 //            }
 //        }
 //
-//        System.out.print("Enter grade point average: ");
-//        double gradePointAverage = in.nextDouble();
-//
-//        Person ivanIvanov = new Person(firstname,lastname, new Date(), gender, gradePointAverage, Boolean.FALSE);
+
 
         PersonService personService = new PersonDatabaseService();
 
@@ -49,8 +75,11 @@ public class Runme {
             personService.getAllPersons().forEach(System.out::println);
 
             System.out.println("");
-            System.out.println("Person with the ID = 2:");
+            System.out.println("Person with the ID = 2: ");
             System.out.println(personService.getPersonByID(2));
+
+            System.out.println(personService.setNewPerson(idProfile, namePerson));
+
         } catch (PersonDataSourceException pdse) {
             pdse.printStackTrace();
         }
@@ -80,21 +109,8 @@ public class Runme {
                 educationLola,
                 Boolean.TRUE);
 
-//        Profile dimaPirmatov = new Profile(
-//                "Dmitriy",
-//                "Pirmatov",
-//                datePirmatov,
-//
-//                );
-//        Profile ivanPetrov = new Profile(
-//                "Ivan",
-//                "Petrov",
-//                datePetrov,
-//                Gender.MALE,
-//                );
 
-
-        System.out.println(lolaPetrova + " - his code - " + lolaPetrova.hashCode());
+//       System.out.println(lolaPetrova + " - his code - " + lolaPetrova.hashCode());
 //        System.out.println(dimaPirmatov + " hash: " + dimaPirmatov.hashCode());
 //        System.out.println(ivanPetrov);
 

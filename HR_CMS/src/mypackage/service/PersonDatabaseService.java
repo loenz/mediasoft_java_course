@@ -16,7 +16,7 @@ public class PersonDatabaseService implements PersonService {
     private final String databasePassword = "10068168";
     private final String tableName = "persons";
     private final String idField = "id";
-    private final String nameField = "name";
+    private final String nameField = "nameint";
 
     @Override
     public List<Person> getAllPersons() throws PersonDataSourceException {
@@ -75,4 +75,36 @@ public class PersonDatabaseService implements PersonService {
 
         return person;
     }
+
+    @Override
+    public Person setNewPerson(Integer id, String namePerson) throws PersonDataSourceException {
+        Person person = null;
+        try {
+            this.databaseFacade.connect(this.databaseLogin, this.databasePassword);
+            Connection connection = this.databaseFacade.getConnection();
+            if(connection != null) {
+                String sql = "insert into " +
+                        this.tableName + "(" + this.idField + "," + this.nameField + ") values(?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, namePerson);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while(resultSet.next()) {
+                    person = new Person();
+                    person.setId(resultSet.getInt(id));
+                    person.setName(resultSet.getString(namePerson));
+                }
+
+            }
+        } catch (DatabaseException de) {
+            throw new PersonDataSourceException("Unable to get person from the database: " + de.getMessage());
+        } catch (SQLException sqle) {
+            throw new PersonDataSourceException("Error while operating with the database statement");
+        } finally {
+            this.databaseFacade.disconnect();
+        }
+
+        return person;
+    }
+
 }
