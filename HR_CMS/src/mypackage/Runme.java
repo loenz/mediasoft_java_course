@@ -41,8 +41,8 @@ public class Runme {
         while (true) {
             try {
                 System.out.print("\nMain menu: \n" +
-                        "| 1 - New profile.. | 2 - Edit profile.. | 3 - Find my name.. |\n" +
-                        "| 4 - All of the persons.. | 5 - Transaction log..| 6 - Exit.. |\n");
+                        "| 1 - New profile.. | 2 - Edit profile.. | 3 - Find person.. |\n" +
+                        "| 4 - All of the persons.. | 5 - Exit.. |\n");
                 try {
                     System.out.print("Enter menu number: _");
                     selectedItem = in.nextInt();
@@ -109,7 +109,7 @@ public class Runme {
                     }
                 }
 
-                if (selectedItem == 6) {
+                if (selectedItem == 5) {
                     System.out.println("Exit... ");
                     break;
                 }
