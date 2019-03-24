@@ -8,10 +8,10 @@ import mypackage.entity.Profile;
 import mypackage.exception.WrongDateException;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import mypackage.exception.PersonDataSourceException;
 import mypackage.service.PersonDatabaseService;
@@ -20,97 +20,136 @@ import mypackage.service.PersonService;
 public class Runme {
     public static void main(String[] args)  {
 
-        Integer idProfile;
+        int selectedItem;
         String namePerson;
+        Gender gender;
 
         Scanner in = new Scanner(System.in);
 
+        PersonService personService = new PersonDatabaseService();
+
+//        try {
+//
+//            System.out.println("\nPerson with the ID = 8: ");
+//            System.out.println(personService.getPersonByID(8));
+//
+//        } catch (PersonDataSourceException pdse) {
+//            pdse.printStackTrace();
+//        }
+
+
         while (true) {
             try {
-                System.out.print("Enter operation: \n" +
-                        "1 - New profile..\n" +
-                        "2 - Edit profile..\n" +
-                        "3 - Find profile..\n" +
-                        "4 - Send message..\n" +
-                        "5 - Transaction log..\n" +
-                        "6 - Exit..\n");
-                int selectedItem = in.nextInt();
-                if (selectedItem == 1 ) {
-                    System.out.print("Enter id of new person: ");
-                    idProfile = in.nextInt();
-                    System.out.print("Enter name of new person: ");
-                    namePerson = in.next();
+                System.out.print("\nMain menu: \n" +
+                        "| 1 - New profile.. | 2 - Edit profile.. | 3 - Find my name.. |\n" +
+                        "| 4 - All of the persons.. | 5 - Transaction log..| 6 - Exit.. |\n");
+                try {
+                    System.out.print("Enter menu number: _");
+                    selectedItem = in.nextInt();
+                } catch (InputMismatchException ime) {
+                    ime.printStackTrace();
                     break;
                 }
+
+                if (selectedItem == 1) {
+
+                    System.out.print("Enter first name: ");
+                    String firstname = in.next();
+                    System.out.print("Enter last name: ");
+                    String lastname = in.next();
+
+                    while (true) {
+                        try {
+                                System.out.print("Enter gender: ");
+                                String genderText = in.next().toUpperCase();
+                                gender = Gender.valueOf(genderText);
+                                break;
+
+                        } catch (IllegalArgumentException e) {
+                                System.out.println(e.getMessage());
+                        }
+                    }
+
+                    System.out.print("Enter birth date (like '2001-09-28'): ");
+                    String date = in.next();
+                    DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+                    try {
+                        format.parse(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    try {
+                        System.out.println("Set new person: ");
+                        personService.setNewPerson(firstname, lastname, gender, date);
+                    } catch (PersonDataSourceException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (selectedItem == 3) {
+                    System.out.print("Введите фамилию человека: ");
+                    namePerson = in.nextLine();
+                    namePerson += in.nextLine();
+                    System.out.println("\nPerson with the name = " + namePerson + ": ");
+                    try {
+                        System.out.println(personService.getPersonByName(namePerson));
+                    } catch (PersonDataSourceException pdse) {
+                        pdse.printStackTrace();
+                    }
+                }
+
+                if (selectedItem == 4) {
+                    System.out.println("All of the persons: ");
+                    try {
+                        personService.getAllPersons().forEach(System.out::println);
+                    } catch (PersonDataSourceException pdse) {
+                        pdse.printStackTrace();
+                    }
+                }
+
+                if (selectedItem == 6) {
+                    System.out.println("Exit... ");
+                    break;
+                }
+
             } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
 
-//        System.out.print("Enter Firstname: ");
-//        String firstname = in.next();
-//        System.out.print("Enter Lastname: ");
-//        String lastname = in.next();
-//        Gender gender;
+
+
+//        Calendar calendar = new GregorianCalendar(1985, Calendar.DECEMBER,27);
+//        Date datePirmatov = calendar.getTime();
 //
-        // Проверка правильности ввода пола
-//        while (true) {
-//            try {
-//                    System.out.print("Enter gender: ");
-//                    String genderText = in.next().toUpperCase();
-//                    gender = Gender.valueOf(genderText);
-//                    break;
+//        Calendar calendarPetrov = new GregorianCalendar(1982, Calendar.JANUARY,12);
+//        Date datePetrov = calendarPetrov.getTime();
 //
-//            } catch (IllegalArgumentException e) {
-//                    System.out.println(e.getMessage());
-//            }
-//        }
+//        Education educationLola;
+//        educationLola = new Education(
+//                1990,
+//                1995,
+//                "ULSTU",
+//                "informatic",
+//                "specialist");
 //
-
-
-        PersonService personService = new PersonDatabaseService();
-
-        try {
-            System.out.println("All of the persons: ");
-            personService.getAllPersons().forEach(System.out::println);
-
-            System.out.println("");
-            System.out.println("Person with the ID = 2: ");
-            System.out.println(personService.getPersonByID(2));
-
-            System.out.println(personService.setNewPerson(idProfile, namePerson));
-
-        } catch (PersonDataSourceException pdse) {
-            pdse.printStackTrace();
-        }
-
-
-        Calendar calendar = new GregorianCalendar(1985, Calendar.DECEMBER,27);
-        Date datePirmatov = calendar.getTime();
-
-        Calendar calendarPetrov = new GregorianCalendar(1982, Calendar.JANUARY,12);
-        Date datePetrov = calendarPetrov.getTime();
-
-        Education educationLola;
-        educationLola = new Education(
-                1990,
-                1995,
-                "ULSTU",
-                "informatic",
-                "specialist");
-
-        Profile lolaPetrova = new Profile(
-                "Lola",
-                "Petrova",
-                new Date(),
-                Gender.FEMALE,
-                "8-901-001-01-01",
-                "petrova@mail.ru",
-                educationLola,
-                Boolean.TRUE);
-
-
+//        Profile lolaPetrova = new Profile(
+//                "Lola",
+//                "Petrova",
+//                new Date(),
+//                Gender.FEMALE,
+//                "8-901-001-01-01",
+//                "petrova@mail.ru",
+//                educationLola,
+//                Boolean.TRUE);
+//
+//
 //       System.out.println(lolaPetrova + " - his code - " + lolaPetrova.hashCode());
+//
+
+
 //        System.out.println(dimaPirmatov + " hash: " + dimaPirmatov.hashCode());
 //        System.out.println(ivanPetrov);
 
