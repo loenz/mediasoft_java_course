@@ -9,15 +9,13 @@ import java.util.Date;
 
 
 
-public class Person {
+public class Person extends Jobseeker {
     // Личные данные
     private String firstName;
     private String lastName;
     private Date birthDate;
     private Gender gender;
-
     private Integer id;
-    private String name;
 
     public Person(String firstName, String lastName, Date birthDate, Gender gender) {
         this.firstName = firstName;
@@ -80,14 +78,21 @@ public class Person {
 
     @Override
     public String toString() {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String result = "";
-        result += this.getLastName() != null ? "Lastname: " + this.getLastName() + " \n" : "";
-        result += this.getFirstName() != null ? "Firstname: " + this.getFirstName() + " \n" : "";
-        result += this.getBirthDate() != null ? "BirthDate: " + dateFormat.format(this.getBirthDate()) + " \n" : "";
-        result += this.getGender() != null ? "Gender: " + this.getGender() + " \n" : "";
-        result += this.getId() + " : " + this.getName();
+        String result = this.getId() != null ? this.getId() + " : " : "";
+        result += this.getLastName() != null ? this.getLastName() + " " : "";
+        result += this.getFirstName() != null ? this.getFirstName() + " " : "";
+        result += this.getBirthDate() != null ? "\t\t\t | BirthDate: " + dateFormat.format(this.getBirthDate()) + " " : "";
+
+        int lfname = (this.getLastName() + " " + this.getFirstName()).length();
+
+        String tab;
+        if (lfname >=16) { tab = "\t"; }
+        else {tab = "\t\t";}
+        if (lfname <=9) {tab = "\t\t\t";}
+
+        result += this.getGender() != null ? tab + " | Gender: " + this.getGender() + " " : "";
 
         return result;
     }
@@ -102,6 +107,7 @@ public class Person {
         );
     }
 
+    @Override
     public void changeBirthDate(Date birthDate) throws WrongDateException {
         if(birthDate == null) {
             throw new WrongDateException("Birth date cannot be NULL!");
@@ -122,22 +128,39 @@ public class Person {
         this.gender = gender;
     }
 
+
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public Date getBirthDate() { return birthDate; }
     public Gender getGender() { return gender; }
-
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-    public void setName(String nameint) {
-        this.name = nameint;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setGender(String gender) {
+
+        if (gender.equals("MALE")) {
+            this.gender = Gender.MALE;
+        }
+
+        if (gender.equals("FEMALE")) {
+            this.gender = Gender.FEMALE;
+        }
     }
 
 }

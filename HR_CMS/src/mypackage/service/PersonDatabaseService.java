@@ -10,7 +10,6 @@ import mypackage.facade.PostgresDatabaseFacade;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static java.sql.Date.valueOf;
@@ -23,6 +22,8 @@ public class PersonDatabaseService implements PersonService {
     private final String idField = "id";
     private final String nameField = "firstname";
     private final String lastNameField = "lastname";
+    private final String birthDate = "birthdate";
+    private final String gender = "gender";
 
     @Override
     public List<Person> getAllPersons() throws PersonDataSourceException {
@@ -37,7 +38,10 @@ public class PersonDatabaseService implements PersonService {
                 while(resultSet.next()) {
                     Person person = new Person();
                     person.setId(resultSet.getInt(this.idField));
-                    person.setName(resultSet.getString(this.nameField));
+                    person.setFirstName(resultSet.getString(this.nameField));
+                    person.setLastName(resultSet.getString(this.lastNameField));
+                    person.setBirthDate(resultSet.getDate(this.birthDate));
+                    person.setGender(resultSet.getString(this.gender));
                     persons.add(person);
                 }
 
@@ -62,17 +66,15 @@ public class PersonDatabaseService implements PersonService {
             this.databaseFacade.connect(this.databaseLogin, this.databasePassword);
             Connection connection = this.databaseFacade.getConnection();
             if(connection != null) {
-                String sql = "SELECT * FROM persons WHERE firstname ILIKE ?";
+                String sql = "SELECT * FROM persons WHERE " + this.nameField + " ILIKE ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, "%" + namePerson + "%");
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-
-
                 while(resultSet.next()) {
                     person = new Person();
-                    person.setId(resultSet.getInt(this.idField));
-                    person.setName(resultSet.getString(this.nameField));
+                    //person.setId(resultSet.getInt(this.idField));
+                    person.setFirstName(resultSet.getString(this.nameField));
                     personArrayList.add(person);
 
                 }
@@ -86,6 +88,10 @@ public class PersonDatabaseService implements PersonService {
             throw new PersonDataSourceException("Error while operating with the database statement");
         } finally {
             this.databaseFacade.disconnect();
+        }
+
+        if (personArrayList.size() > 1) {
+            System.out.println("[INFO] Refine search..");
         }
 
         return personArrayList;

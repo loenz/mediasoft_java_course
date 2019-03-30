@@ -37,12 +37,14 @@ public class Runme {
 //            pdse.printStackTrace();
 //        }
 
+        System.out.println("MediaSoft exam. Learner: Pirmatov Dmitriy. Theme: \'HR SRM\'");
+        System.out.println("Github: https://github.com/loenz/mediasoft_java_course.git");
 
         while (true) {
             try {
-                System.out.print("\nMain menu: \n" +
-                        "| 1 - New profile.. | 2 - Edit profile.. | 3 - Find person.. |\n" +
-                        "| 4 - All of the persons.. | 5 - Exit.. |\n");
+                System.out.print("\nSelect action: \n" +
+                        "| [1] - New profile.. | [2] - Edit profile.. | [3] - Find person.. | " +
+                        "| [4] - All of the persons.. | [5] - Exit.. |\n");
                 try {
                     System.out.print("Enter menu number: _");
                     selectedItem = in.nextInt();
@@ -85,6 +87,23 @@ public class Runme {
                         personService.setNewPerson(firstname, lastname, gender, date);
                     } catch (PersonDataSourceException e) {
                         e.printStackTrace();
+                    }
+                }
+
+                if (selectedItem == 2) {
+                    System.out.print("[2.1]..Change birth date");
+                    System.out.print(" | [2.2]..Change gender \n");
+                    selectedItem = in.nextInt();
+                    if (selectedItem == 1) {
+                        System.out.println("Enter part of person name: ");
+                        namePerson = in.next();
+                        try {
+                            List<Person> person = personService.getPersonByName(namePerson);
+
+                            System.out.println(personService.getPersonByName(namePerson));
+                        } catch (PersonDataSourceException pdse) {
+                            pdse.printStackTrace();
+                        }
                     }
                 }
 
