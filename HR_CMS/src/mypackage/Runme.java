@@ -43,8 +43,8 @@ public class Runme {
         while (true) {
             try {
                 System.out.print("\nSelect action: \n" +
-                        "| [1] - New profile.. | [2] - Edit profile.. | [3] - Find person.. | " +
-                        "| [4] - All of the persons.. | [5] - Exit.. |\n");
+                        "| [1] - New profile | [2] - Edit profile.. | [3] - Find person " +
+                        "| [4] - All of the persons | [5] - Exit |\n");
                 try {
                     System.out.print("Enter menu number: _");
                     selectedItem = in.nextInt();
@@ -91,16 +91,36 @@ public class Runme {
                 }
 
                 if (selectedItem == 2) {
-                    System.out.print("[2.1]..Change birth date");
-                    System.out.print(" | [2.2]..Change gender \n");
+                    System.out.println("..[1] - Change birth date  | [2] - Change status");
+                    System.out.print("Select action: _");
                     selectedItem = in.nextInt();
+                    System.out.print("Enter part of person name: ");
                     if (selectedItem == 1) {
-                        System.out.println("Enter part of person name: ");
+
                         namePerson = in.next();
                         try {
-                            List<Person> person = personService.getPersonByName(namePerson);
+                            List<Person> persons = personService.getPersonByName(namePerson);
+                            Person person = persons.get(0);
+                            if (persons.size() == 1) {
+                                System.out.println("Person defined as: " + person);
+                                System.out.println("Enter new birth date for `" + person + "` (format: 1900-12-31): ");
 
-                            System.out.println(personService.getPersonByName(namePerson));
+                                //Scanner in = new Scanner(System.in);
+                                String pDate = in.next();
+                                String newDate = parseOfNewDate(pDate,"yyyy-mm-dd");
+
+                                //persons.get(0).changeBirthDate(newDate);
+
+                                try {
+                                    System.out.println("Set new birth date of person to " + newDate);
+                                    personService.setNewBirthDate(newDate, person);
+
+                                } catch (PersonDataSourceException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
                         } catch (PersonDataSourceException pdse) {
                             pdse.printStackTrace();
                         }
@@ -140,6 +160,9 @@ public class Runme {
 
 
 
+
+
+
 //        Calendar calendar = new GregorianCalendar(1985, Calendar.DECEMBER,27);
 //        Date datePirmatov = calendar.getTime();
 //
@@ -164,32 +187,18 @@ public class Runme {
 //                educationLola,
 //                Boolean.TRUE);
 //
-//
-//       System.out.println(lolaPetrova + " - his code - " + lolaPetrova.hashCode());
-//
 
+    }
 
-//        System.out.println(dimaPirmatov + " hash: " + dimaPirmatov.hashCode());
-//        System.out.println(ivanPetrov);
+    public static String parseOfNewDate(String newDate, String pattern) {
 
-//        Date newDate = new Date();
-//        Long time = newDate.getTime();
-//        System.out.println(time);
-//
-//        try {
-//            ivanIvanov.changeBirthDate(newDate);
-//        } catch (WrongDateException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            ivanIvanov.changeGender(Gender.FEMALE);
-//        } catch (WrongGenderException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println(ivanIvanov + " - his code - " + ivanIvanov.hashCode());
-
+        DateFormat format = new SimpleDateFormat(pattern);
+        try {
+            format.parse(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newDate;
     }
 
 }

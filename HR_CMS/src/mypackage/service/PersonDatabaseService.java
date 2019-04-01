@@ -25,12 +25,21 @@ public class PersonDatabaseService implements PersonService {
     private final String birthDate = "birthdate";
     private final String gender = "gender";
 
+    public Connection datebaseConnect() throws PersonDataSourceException {
+        try {
+            this.databaseFacade.connect(this.databaseLogin, this.databasePassword);
+        } catch (DatabaseException de) {
+            throw new PersonDataSourceException("Unable to get person list from the database: " + de.getMessage());
+        }
+        Connection connection = this.databaseFacade.getConnection();
+        return connection;
+    }
+
     @Override
     public List<Person> getAllPersons() throws PersonDataSourceException {
         List<Person> persons = new ArrayList<Person>();
         try {
-            this.databaseFacade.connect(this.databaseLogin, this.databasePassword);
-            Connection connection = this.databaseFacade.getConnection();
+            Connection connection = datebaseConnect();
             if(connection != null) {
                 Statement statement = connection.createStatement();
                 String sql = "select * from " + this.tableName;
@@ -46,8 +55,6 @@ public class PersonDatabaseService implements PersonService {
                 }
 
             }
-        } catch (DatabaseException de) {
-            throw new PersonDataSourceException("Unable to get person list from the database: " + de.getMessage());
         } catch (SQLException sqle) {
             throw new PersonDataSourceException("Error while operating with the database statement");
         } finally {
@@ -63,8 +70,7 @@ public class PersonDatabaseService implements PersonService {
         List<Person> personArrayList = new ArrayList<>();
 
         try {
-            this.databaseFacade.connect(this.databaseLogin, this.databasePassword);
-            Connection connection = this.databaseFacade.getConnection();
+            Connection connection = datebaseConnect();
             if(connection != null) {
                 String sql = "SELECT * FROM persons WHERE " + this.nameField + " ILIKE ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -82,8 +88,6 @@ public class PersonDatabaseService implements PersonService {
                 //System.out.println(personArrayList);
 
             }
-        } catch (DatabaseException de) {
-            throw new PersonDataSourceException("Unable to get person from the database: " + de.getMessage());
         } catch (SQLException sqle) {
             throw new PersonDataSourceException("Error while operating with the database statement");
         } finally {
@@ -102,8 +106,7 @@ public class PersonDatabaseService implements PersonService {
         Person person = null;
 
         try {
-            this.databaseFacade.connect(this.databaseLogin, this.databasePassword);
-            Connection connection = this.databaseFacade.getConnection();
+            Connection connection = datebaseConnect();
             if(connection != null) {
 
                 String sql = "INSERT INTO persons(" +
@@ -127,8 +130,6 @@ public class PersonDatabaseService implements PersonService {
 //                }
 
             }
-        } catch (DatabaseException de) {
-            throw new PersonDataSourceException("Unable to get person from the database: " + de.getMessage());
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             throw new PersonDataSourceException("Error while operating with the database statement");
@@ -137,6 +138,30 @@ public class PersonDatabaseService implements PersonService {
         }
 
         return person;
+    }
+
+    @Override
+    public Person setNewBirthDate(String birthDate, Person person) throws PersonDataSourceException {
+
+        try {
+            Connection connection = datebaseConnect();
+            if(connection != null) {
+                String sql = "UPDATE " + this.tableName +
+                            " SET " + this.birthDate + " = ? WHERE " + this.nameField + " = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setDate(1, valueOf(birthDate));
+                preparedStatement.setString(2, person.getFirstName());
+                int rows = preparedStatement.executeUpdate();
+                System.out.printf("%d rows updated", rows);
+            }
+        } catch (SQLException sqle) {
+            throw new PersonDataSourceException("Error while operating with the database statement");
+        } finally {
+            this.databaseFacade.disconnect();
+        }
+
+        return person;
+
     }
 
 }

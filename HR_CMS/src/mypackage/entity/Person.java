@@ -85,14 +85,7 @@ public class Person extends Jobseeker {
         result += this.getFirstName() != null ? this.getFirstName() + " " : "";
         result += this.getBirthDate() != null ? "\t\t\t | BirthDate: " + dateFormat.format(this.getBirthDate()) + " " : "";
 
-        int lfname = (this.getLastName() + " " + this.getFirstName()).length();
-
-        String tab;
-        if (lfname >=16) { tab = "\t"; }
-        else {tab = "\t\t";}
-        if (lfname <=9) {tab = "\t\t\t";}
-
-        result += this.getGender() != null ? tab + " | Gender: " + this.getGender() + " " : "";
+        result += this.getGender() != null ? " | Gender: " + this.getGender() + " " : "";
 
         return result;
     }
